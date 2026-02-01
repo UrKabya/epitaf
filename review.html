@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হুমায়ূন আহমেদ সমগ্র - Reviews</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-container {
+            padding: 80px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
+            flex: 1;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        
+        .page-title h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .review-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .review-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        /* Quote Carousel Styles */
+        .quote-carousel {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        .quote-card {
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            margin: 0 auto;
+            min-height: 250px;
+        }
+
+        .quote-card.active {
+            display: flex;
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .quote-card.next {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .quote-card.prev {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .quote-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--text-primary);
+            padding: 0 20px;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .quote-text::before {
+            top: -30px;
+            left: 0;
+        }
+
+        .quote-text::after {
+            bottom: -50px;
+            right: 0;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .author::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .arrow {
+            pointer-events: auto;
+            background: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .arrow:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Water Drop Styles */
+        .water-drop-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            perspective: 1000px;
+            margin: 30px auto;
+            z-index: 10;
+        }
+        
+        .water-drop {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border-radius: 50% 50% 45% 45%;
+            transform: scale(0) translateY(-300px);
+            opacity: 0;
+            animation: dropFall 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            box-shadow: 0 10px 30px rgba(110, 142, 251, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        @keyframes dropFall {
+            0% { transform: scale(0.2) translateY(-300px); opacity: 0; }
+            70% { transform: scale(1.05) translateY(20px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        
+        .water-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, #4a6cf7, #8a2be2);
+            height: 0%;
+            animation: waterRise 2s 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+            z-index: 1;
+            border-radius: 0 0 45% 45%;
+        }
+        
+        @keyframes waterRise {
+            0% { height: 0%; opacity: 0.8; }
+            100% { height: 100%; opacity: 1; }
+        }
+        
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 1.5s 3s ease-out forwards;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        
+        .review-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeIn 2s 3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .review-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .review-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            font-size: 15px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4a6cf7, #8a2be2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .review-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.5);
+        }
+        
+        .review-btn:active {
+            transform: scale(0.96);
+        }
+        
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: floatBubble 4s infinite ease-in-out;
+            opacity: 0;
+        }
+        
+        @keyframes floatBubble {
+            0% { transform: translateY(0) scale(0.2); opacity: 0; }
+            20% { opacity: 0.7; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+        
+        /* User Reviews Carousel */
+        .review-container {
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            margin: 20px auto;
+            height: 400px;
+        }
+
+        .review-box {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-top: 3px solid var(--primary-color);
+            transition: all 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateX(100%);
+            z-index: 1;
+        }
+
+        .review-box.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .review-box.next {
+            transform: translateX(100%);
+        }
+
+        .review-box.prev {
+            transform: translateX(-100%);
+        }
+
+        .review-content {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7b4cff, #c04cff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .reviewer-details {
+            flex: 1;
+        }
+
+        .reviewer-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .reviewer-title {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .stars {
+            margin-bottom: 15px;
+        }
+
+        .stars i {
+            color: #ffc107;
+            font-size: 16px;
+            margin-right: 3px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 8px;
+        }
+
+        .dots .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dots .dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .swipe-instruction {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 1.3rem;
+            }
+            
+            .quote-text::before,
+            .quote-text::after {
+                font-size: 3rem;
+            }
+            
+            .quote-text::before {
+                top: -20px;
+                left: 0;
+            }
+            
+            .quote-text::after {
+                bottom: -40px;
+                right: 0;
+            }
+            
+            .quote-card {
+                padding: 30px 20px;
+                min-height: 200px;
+            }
+            
+            .arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .water-drop-container {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="new-collection.html" class="nav-link"><i class="fas fa-book-open"></i> New Collection</a>
+                <a href="review.html" class="nav-link active"><i class="fas fa-star"></i> Review</a>
+                <a href="about.html" class="nav-link"><i class="fas fa-user"></i> About</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="page-container">
+        <div class="page-title">
+            <h1>রিভিউ ও রেটিং</h1>
+            <p>পাঠকদের মতামত এবং মূল্যায়ন</p>
+        </div>
+        
+        <div class="review-sections">
+            <!-- Quotes Section -->
+            <div class="review-section">
+                <h2 class="section-title">হুমায়ূন আহমেদের উক্তি</h2>
+                <div class="quote-carousel">
+                    <div class="nav-arrows">
+                        <div class="arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
+                        <div class="arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <div class="quote-card active">
+                        <div class="quote-text">মানুষের দুঃখকষ্ট দেখাও একটি কষ্টদায়ক কাজ।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">জীবনে দুঃখ থাকবেই কিন্তু দুঃখকে জয় করার নামই জীবন।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">ভালোবাসা এমন একটা জিনিস যা দিয়ে সবকিছু মাপা যায় কিন্তু যা নিজে অপরিমেয়।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">সুখের জন্য বড় কিছু দরকার নেই ছোট ছোট মুহূর্তগুলোই জীবনের সবচেয়ে বড় সম্পদ।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="nav-dots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                        <div class="dot" data-index="3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Water Drop Review Button -->
+            <div class="review-section">
+                <h2 class="section-title">আপনার রিভিউ দিন</h2>
+                <div class="water-drop-container">
+                    <div class="water-drop">
+                        <div class="water-fill"></div>
+                        <div class="review-content">
+                            <div class="review-text">আপনার মতামত দিন !</div>
+                            <a href="https://tally.so/r/dWNWVr" target="_blank" class="review-btn">Review</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Reviews Carousel -->
+            <div class="review-section">
+                <h2 class="section-title">পাঠকদের রিভিউ</h2>
+                <div class="review-container" id="reviewContainer">
+                    <!-- Review 1 -->
+                    <div class="review-box active">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span style="color: var(--text-secondary); font-size: 12px; margin-left: 5px;">4.5</span>
+                        </div>
+                        
+                        <p class="review-content">
+                            বইগুলো দারুণ ইন্টারেস্টিং,পড়ে ভালো লাগলো । আগামিতে আরও নতুন টেস্টের বই দেখতে চাই এবং সবসময় পড়ার চেষ্টা করবো । কর্তৃপক্ষকে শুভকামনা ।
+                        </p>
+                        
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">AT</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">Anonna Sarkar Troyee</div>
+                                <div class="reviewer-title">✪ Verified Reader • Natore</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="review-box">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span style="color: var(--text-secondary); font-size: 12px; margin-left: 5px;">5.0</span>
+                        </div>
+                        
+                        <p class="review-content">
+                            Obviously, this is a very good idea and I really appreciate it. It will help this generation to make their time better by reading those incredible books.
+                        </p>
+                        
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">DA</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">Double A Edits</div>
+                                <div class="reviewer-title">✪ Verified Reader</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="review-box">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span style="color: var(--text-secondary); font-size: 12px; margin-left: 5px;">5.0</span>
+                        </div>
+                        
+                        <p class="review-content">
+                            This is absolutely amazing app. I really like this♥️
+                        </p>
+                        
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">E</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">Ekram</div>
+                                <div class="reviewer-title">✪ Verified Reader</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 4 -->
+                    <div class="review-box">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            <span style="color: var(--text-secondary); font-size: 12px; margin-left: 5px;">4.0</span>
+                        </div>
+                        
+                        <p class="review-content">
+                            I think this is a unique website for readers. If I have to rate this website I will give it 8/10
+                        </p>
+                        
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">FA</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">Fowzia Arohi</div>
+                                <div class="reviewer-title">✪ Verified Reader</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 5 -->
+                    <div class="review-box">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span style="color: var(--text-secondary); font-size: 12px; margin-left: 5px;">5.0</span>
+                        </div>
+                        
+                        <p class="review-content">
+                            The Website is Totally Awesome as an Reader I've absolutely loved this one with a classic opening it was also smooth totally a heavenly vibe for Readers.
+                        </p>
+                        
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">MM</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">Magfi Mahmud Rohan</div>
+                                <div class="reviewer-title">✪ Verified Reader</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dots">
+                    <div class="dot active" data-index="0"></div>
+                    <div class="dot" data-index="1"></div>
+                    <div class="dot" data-index="2"></div>
+                    <div class="dot" data-index="3"></div>
+                    <div class="dot" data-index="4"></div>
+                </div>
+                
+                <p class="swipe-instruction">Swipe left/right to navigate reviews</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="company-header">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Company Logo" class="company-logo">
+                <div class="copyright">© 2025 All Rights Reserved</div>
+            </div>
+
+            <nav class="footer-nav">
+                <div class="nav-item" id="privacyBtn">
+                    Privacy Policy
+                    <div class="info-card" id="privacyCard">
+                        We respect your privacy. Your personal data is collected only with your consent.
+                    </div>
+                </div>
+
+                <div class="nav-item" id="contactBtn">
+                    Contact Us
+                    <div class="info-card" id="contactCard">
+                        <div class="contact-item">
+                            <a href="mailto:primeaguntuk@gmail.com">primeaguntuk@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item" id="versionBtn">
+                    Version
+                    <div class="info-card" id="versionCard">
+                        Latest Version 0.1.23
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+        }
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-container')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        
+        // Quote Carousel
+        const quoteCards = document.querySelectorAll('.quote-card');
+        const quoteDots = document.querySelectorAll('.quote-carousel .dot');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+        let currentQuoteIndex = 0;
+        let quoteSwipeInterval;
+
+        function showQuoteCard(index) {
+            quoteCards.forEach(card => {
+                card.classList.remove('active', 'prev', 'next');
+            });
+            
+            quoteDots.forEach(dot => dot.classList.remove('active'));
+            quoteDots[index].classList.add('active');
+            
+            quoteCards[index].classList.add('active');
+            
+            currentQuoteIndex = index;
+            resetQuoteSwipe();
+        }
+
+        function nextQuoteCard() {
+            const nextIndex = (currentQuoteIndex + 1) % quoteCards.length;
+            showQuoteCard(nextIndex);
+        }
+
+        function prevQuoteCard() {
+            const prevIndex = (currentQuoteIndex - 1 + quoteCards.length) % quoteCards.length;
+            showQuoteCard(prevIndex);
+        }
+
+        function resetQuoteSwipe() {
+            clearInterval(quoteSwipeInterval);
+            quoteSwipeInterval = setInterval(nextQuoteCard, 5000);
+        }
+
+        quoteDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showQuoteCard(parseInt(dot.getAttribute('data-index')));
+            });
+        });
+
+        leftArrow.addEventListener('click', prevQuoteCard);
+        rightArrow.addEventListener('click', nextQuoteCard);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevQuoteCard();
+            if (e.key === 'ArrowRight') nextQuoteCard();
+        });
+
+        showQuoteCard(0);
+        resetQuoteSwipe();
+        
+        // Water Drop Animation
+        setTimeout(() => {
+            const drop = document.querySelector('.water-drop');
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = '100px';
+            ripple.style.height = '100px';
+            ripple.style.left = '50%';
+            ripple.style.top = '50%';
+            ripple.style.marginLeft = '-50px';
+            ripple.style.marginTop = '-50px';
+            drop.appendChild(ripple);
+            
+            // Create bubbles
+            function createBubbles() {
+                const container = document.querySelector('.water-drop-container');
+                
+                for (let i = 0; i < 6; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    
+                    const size = Math.random() * 10 + 5;
+                    const delay = Math.random() * 2;
+                    const duration = 3 + Math.random() * 3;
+                    const left = Math.random() * 100;
+                    
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    bubble.style.left = `${left}%`;
+                    bubble.style.bottom = '0';
+                    bubble.style.animationDelay = `${delay}s`;
+                    bubble.style.animationDuration = `${duration}s`;
+                    
+                    container.appendChild(bubble);
+                }
+            }
+            
+            createBubbles();
+            
+            // Button Splash Effect
+            const btn = document.querySelector('.review-btn');
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const splash = document.createElement('div');
+                splash.className = 'ripple';
+                splash.style.width = '50px';
+                splash.style.height = '50px';
+                splash.style.left = '50%';
+                splash.style.top = '50%';
+                splash.style.marginLeft = '-25px';
+                splash.style.marginTop = '-25px';
+                splash.style.background = 'rgba(255, 255, 255, 0.8)';
+                splash.style.animation = 'ripple 0.8s ease-out forwards';
+                
+                btn.appendChild(splash);
+                
+                setTimeout(() => {
+                    window.open(btn.href, '_blank');
+                }, 500);
+            });
+            
+        }, 3000);
+        
+        // User Reviews Carousel
+        const reviews = document.querySelectorAll('.review-box');
+        const reviewDots = document.querySelectorAll('.dots .dot');
+        const container = document.getElementById('reviewContainer');
+        let currentReviewIndex = 0;
+        let reviewSwipeInterval;
+
+        function showReview(index) {
+            if (index >= reviews.length) index = 0;
+            if (index < 0) index = reviews.length - 1;
+            
+            reviews.forEach(review => review.classList.remove('active', 'prev', 'next'));
+            reviews[index].classList.add('active');
+            
+            if (index > 0) reviews[index-1].classList.add('prev');
+            if (index < reviews.length-1) reviews[index+1].classList.add('next');
+            
+            reviewDots.forEach(dot => dot.classList.remove('active'));
+            reviewDots[index].classList.add('active');
+            
+            currentReviewIndex = index;
+            
+            resetReviewSwipe();
+        }
+
+        function nextReview() {
+            showReview(currentReviewIndex + 1);
+        }
+
+        function prevReview() {
+            showReview(currentReviewIndex - 1);
+        }
+
+        function resetReviewSwipe() {
+            clearInterval(reviewSwipeInterval);
+            reviewSwipeInterval = setInterval(nextReview, 5000);
+        }
+
+        // Dot navigation
+        reviewDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showReview(parseInt(dot.getAttribute('data-index')));
+            });
+        });
+
+        // Swipe functionality
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(reviewSwipeInterval);
+        }, {passive: true});
+
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const threshold = 50;
+            
+            if (touchEndX < touchStartX - threshold) {
+                nextReview();
+            } else if (touchEndX > touchStartX + threshold) {
+                prevReview();
+            }
+            resetReviewSwipe();
+        }
+
+        // Initialize
+        showReview(0);
+        
+        // Footer info cards
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.querySelector('.info-card');
+                
+                document.querySelectorAll('.info-card').forEach(c => {
+                    if (c !== card) c.classList.remove('show');
+                });
+                
+                card.classList.toggle('show');
+            });
+        });
+        
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
