@@ -147,8 +147,12 @@ body {
     height: 100%;
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     z-index: 2000;
-    pointer-events: none;
+    pointer-events: all;
     overflow: hidden;
+}
+
+.intro-overlay.hidden {
+    display: none;
 }
 
 .particles {
@@ -282,10 +286,14 @@ body {
     padding: 80px 20px 20px;
     margin: 0 auto;
     max-width: 1200px;
-    opacity: 0;
     width: 100%;
-    animation: fadeIn 0.5s forwards 1s;
     flex: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.container.visible {
+    opacity: 1;
 }
 
 /* Search Interface */
@@ -376,7 +384,7 @@ body {
     margin: 0;
     padding: 0;
     opacity: 0;
-    animation: fadeIn 0.5s forwards 1s;
+    animation: fadeIn 0.5s forwards 0.3s;
     order: 2;
 }
 
