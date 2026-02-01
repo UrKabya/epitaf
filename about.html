@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হুমায়ূন আহমেদ সমগ্র - About</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-container {
+            padding: 80px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
+            flex: 1;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        
+        .page-title h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .about-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .about-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        /* Quote Carousel Styles */
+        .quote-carousel {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        .quote-card {
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            margin: 0 auto;
+            min-height: 250px;
+        }
+
+        .quote-card.active {
+            display: flex;
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .quote-card.next {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .quote-card.prev {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .quote-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--text-primary);
+            padding: 0 20px;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .quote-text::before {
+            top: -30px;
+            left: 0;
+        }
+
+        .quote-text::after {
+            bottom: -50px;
+            right: 0;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #FFD700;
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .author::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #FFD700;
+            transform: scale(1.2);
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .arrow {
+            pointer-events: auto;
+            background: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .arrow:hover {
+            background: #FFD700;
+            color: #000;
+        }
+        
+        /* Info Carousel Styles */
+        .carousel-container {
+            width: 100%;
+            max-width: 560px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            will-change: transform;
+        }
+        
+        .info-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            flex: 0 0 100%;
+            min-width: 0;
+            opacity: 0.7;
+            transform: scale(0.96);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin: 0;
+        }
+        
+        .info-card.active {
+            opacity: 1;
+            transform: scale(1);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #FFD700);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .info-card.active::before {
+            opacity: 1;
+        }
+        
+        .info-card h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .info-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .info-card.active h2::after {
+            width: 60px;
+        }
+        
+        .info-card p {
+            font-size: 1rem;
+            margin: 0.8rem 0;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.2px;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+            color: var(--text-primary);
+        }
+        
+        .info-card.active p {
+            opacity: 1;
+        }
+        
+        .studio-logo {
+            display: block;
+            width: 120px;
+            height: auto;
+            margin: 1rem auto;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 1.25rem auto;
+            width: 80%;
+            transition: width 0.3s ease;
+        }
+        
+        .info-card.active .divider {
+            width: 60%;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 0.5rem;
+        }
+        
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .carousel-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.3);
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: calc(100% - 3rem);
+            left: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
+        
+        .carousel-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0.8;
+            color: var(--text-primary);
+        }
+        
+        .carousel-btn:hover {
+            opacity: 1;
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: var(--primary-color);
+            width: 100%;
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 15s linear;
+        }
+        
+        .progress-bar.active {
+            transform: scaleX(1);
+        }
+        
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 1.3rem;
+            }
+            
+            .quote-text::before,
+            .quote-text::after {
+                font-size: 3rem;
+            }
+            
+            .quote-text::before {
+                top: -20px;
+                left: 0;
+            }
+            
+            .quote-text::after {
+                bottom: -40px;
+                right: 0;
+            }
+            
+            .quote-card {
+                padding: 30px 20px;
+                min-height: 200px;
+            }
+            
+            .arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .info-card {
+                padding: 1.75rem 1.25rem;
+            }
+            
+            .info-card h2 {
+                font-size: 1.15rem;
+            }
+            
+            .carousel-controls {
+                display: none;
+            }
+            
+            .studio-logo {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="new-collection.html" class="nav-link"><i class="fas fa-book-open"></i> New Collection</a>
+                <a href="review.html" class="nav-link"><i class="fas fa-star"></i> Review</a>
+                <a href="about.html" class="nav-link active"><i class="fas fa-user"></i> About</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="page-container">
+        <div class="page-title">
+            <h1>আমাদের সম্পর্কে</h1>
+            <p>হুমায়ূন আহমেদের জীবন দর্শন এবং ওয়েবসাইটের তথ্য</p>
+        </div>
+        
+        <div class="about-sections">
+            <!-- Quotes Section -->
+            <div class="about-section">
+                <h2 class="section-title">হুমায়ূন আহমেদের দর্শন</h2>
+                <div class="quote-carousel">
+                    <div class="nav-arrows">
+                        <div class="arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
+                        <div class="arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <div class="quote-card active">
+                        <div class="quote-text">ছেলে পাগলের চেয়ে মেয়ে পাগল অনেক বেশি ভয়ংকর।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">ভালোবাসা দিয়ে সবকিছু কেনা যায় শুধু ভালোবাসা ছাড়া।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">মানুষের জীবনের সবচেয়ে বড় শিক্ষা হলো সে কিছুই শেখে না।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">আমরা সবাই একা। জন্ম একা মৃত্যু একা। মাঝখানের এই যাত্রাটুকুই আমাদের একমাত্র সঙ্গী।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">প্রায় সবাই তার বিপরীত স্বভাবের মানুষের প্রেমে পড়ে।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="nav-dots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                        <div class="dot" data-index="3"></div>
+                        <div class="dot" data-index="4"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Info Carousel Section -->
+            <div class="about-section">
+                <h2 class="section-title">ওয়েবসাইট তথ্য</h2>
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <div class="info-card active">
+                            <h2>অতিরিক্ত ক্রেডিট</h2>
+                            <div class="divider"></div>
+                            <p>কোড এবং সহায়তা - DeepSeek</p>
+                            <p>ফর্ম - Tally Forms</p>
+                            <p>ওয়েব নির্মাতা - Google Sites</p>
+                            <p>ওয়েব হোস্টিং - InfinityFree</p>
+                            <p>ডিজাইন এবং ইউআই - A.S.Kabya</p>
+                            <div class="progress-bar active"></div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h2>ওয়েবসাইট বিবরণ</h2>
+                            <div class="divider"></div>
+                            <p>তৈরির তারিখ: 03/04/2024</p>
+                            <p>সর্বশেষ আপডেট: 17/12/2025</p>
+                            <p>১. অনুসন্ধান ফলাফল</p>
+                            <p>২. উক্তি সংগ্রহ</p>
+                            <p>৩. নতুন সংগ্রহ</p>
+                            <p>৪. ইউআই এবং অ্যানিমেশন</p>
+                            <p>সর্বশেষ সংস্করণ: 0.1.23</p>
+                            <div class="progress-bar"></div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h2>ওয়েবসাইট মালিকানা</h2>
+                            <div class="divider"></div>
+                            <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Studio X Logo" class="studio-logo">
+                            <p>মালিক - A.S.Kabya</p>
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-nav">
+                        <div class="carousel-dot active" data-index="0"></div>
+                        <div class="carousel-dot" data-index="1"></div>
+                        <div class="carousel-dot" data-index="2"></div>
+                    </div>
+                    
+                    <div class="carousel-controls">
+                        <button class="carousel-btn prev-btn" aria-label="Previous card">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next-btn" aria-label="Next card">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="company-header">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Company Logo" class="company-logo">
+                <div class="copyright">© 2025 All Rights Reserved</div>
+            </div>
+
+            <nav class="footer-nav">
+                <div class="nav-item" id="privacyBtn">
+                    Privacy Policy
+                    <div class="info-card" id="privacyCard">
+                        We respect your privacy. Your personal data is collected only with your consent.
+                    </div>
+                </div>
+
+                <div class="nav-item" id="contactBtn">
+                    Contact Us
+                    <div class="info-card" id="contactCard">
+                        <div class="contact-item">
+                            <a href="mailto:primeaguntuk@gmail.com">primeaguntuk@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item" id="versionBtn">
+                    Version
+                    <div class="info-card" id="versionCard">
+                        Latest Version 0.1.23
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+        }
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-container')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        
+        // Quote Carousel
+        const quoteCards = document.querySelectorAll('.quote-card');
+        const quoteDots = document.querySelectorAll('.quote-carousel .dot');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+        let currentQuoteIndex = 0;
+        let quoteSwipeInterval;
+
+        function showQuoteCard(index) {
+            quoteCards.forEach(card => {
+                card.classList.remove('active', 'prev', 'next');
+            });
+            
+            quoteDots.forEach(dot => dot.classList.remove('active'));
+            quoteDots[index].classList.add('active');
+            
+            quoteCards[index].classList.add('active');
+            
+            currentQuoteIndex = index;
+            resetQuoteSwipe();
+        }
+
+        function nextQuoteCard() {
+            const nextIndex = (currentQuoteIndex + 1) % quoteCards.length;
+            showQuoteCard(nextIndex);
+        }
+
+        function prevQuoteCard() {
+            const prevIndex = (currentQuoteIndex - 1 + quoteCards.length) % quoteCards.length;
+            showQuoteCard(prevIndex);
+        }
+
+        function resetQuoteSwipe() {
+            clearInterval(quoteSwipeInterval);
+            quoteSwipeInterval = setInterval(nextQuoteCard, 5000);
+        }
+
+        quoteDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showQuoteCard(parseInt(dot.getAttribute('data-index')));
+            });
+        });
+
+        leftArrow.addEventListener('click', prevQuoteCard);
+        rightArrow.addEventListener('click', nextQuoteCard);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevQuoteCard();
+            if (e.key === 'ArrowRight') nextQuoteCard();
+        });
+
+        showQuoteCard(0);
+        resetQuoteSwipe();
+        
+        // Info Carousel
+        const track = document.querySelector('.carousel-track');
+        const cards = document.querySelectorAll('.info-card');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const progressBars = document.querySelectorAll('.progress-bar');
+        const cardWidth = cards[0].offsetWidth;
+        let currentCardIndex = 0;
+        let autoScrollInterval;
+        let touchStartX = 0;
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentCardIndex * cardWidth}px)`;
+            
+            cards.forEach((card, index) => {
+                card.classList.toggle('active', index === currentCardIndex);
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentCardIndex);
+            });
+            
+            progressBars.forEach(bar => {
+                bar.classList.remove('active');
+                bar.style.transition = 'none';
+                void bar.offsetWidth;
+                bar.style.transition = 'transform 15s linear';
+            });
+            
+            progressBars[currentCardIndex].classList.add('active');
+        }
+        
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % cards.length;
+            updateCarousel();
+            resetAutoScroll();
+        }
+        
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+            updateCarousel();
+            resetAutoScroll();
+        }
+        
+        function startAutoScroll() {
+            clearInterval(autoScrollInterval);
+            autoScrollInterval = setInterval(nextCard, 15000);
+        }
+        
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            startAutoScroll();
+        }
+        
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentCardIndex = parseInt(dot.getAttribute('data-index'));
+                updateCarousel();
+                resetAutoScroll();
+            });
+        });
+        
+        prevBtn.addEventListener('click', prevCard);
+        nextBtn.addEventListener('click', nextCard);
+        
+        // Touch events
+        track.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+            startPos = touchStartX;
+            isDragging = true;
+            track.style.transition = 'none';
+        }, {passive: true});
+        
+        track.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            currentTranslate = prevTranslate + currentX - startPos;
+            track.style.transform = `translateX(calc(-${currentCardIndex * cardWidth}px + ${currentX - startPos}px))`;
+        }, {passive: true});
+        
+        track.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            const movedBy = currentTranslate - prevTranslate;
+            
+            if (movedBy < -50 && currentCardIndex < cards.length - 1) {
+                nextCard();
+            } else if (movedBy > 50 && currentCardIndex > 0) {
+                prevCard();
+            } else {
+                track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                track.style.transform = `translateX(-${currentCardIndex * cardWidth}px)`;
+            }
+            
+            prevTranslate = -currentCardIndex * cardWidth;
+        }, {passive: true});
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+        });
+        
+        // Initialize
+        updateCarousel();
+        startAutoScroll();
+        
+        // Footer info cards
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.querySelector('.info-card');
+                
+                document.querySelectorAll('.info-card').forEach(c => {
+                    if (c !== card) c.classList.remove('show');
+                });
+                
+                card.classList.toggle('show');
+            });
+        });
+        
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
