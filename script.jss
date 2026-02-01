@@ -3,34 +3,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        body.classList.toggle('light-mode');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            
+            // Save preference to localStorage
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
         
-        const icon = themeToggle.querySelector('i');
-        if (body.classList.contains('light-mode')) {
-            icon.className = 'fas fa-sun';
-        } else {
-            icon.className = 'fas fa-moon';
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
         }
-        
-        // Save preference to localStorage
-        localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
-    });
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
-        body.classList.remove('dark-mode');
-        body.classList.add('light-mode');
-        themeToggle.querySelector('i').className = 'fas fa-sun';
     }
     
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.querySelector('.nav-links');
     
-    if (menuToggle) {
+    if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
@@ -43,11 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Footer info cards
-    document.querySelectorAll('.nav-item').forEach(item => {
+    // Footer info cards - only on pages that have them
+    document.querySelectorAll('.footer-nav .nav-item').forEach(item => {
         item.addEventListener('click', function(e) {
             e.stopPropagation();
             const card = this.querySelector('.info-card');
+            
+            if (!card) return;
             
             // Close all other cards
             document.querySelectorAll('.info-card').forEach(c => {
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Only run intro animation on home page
     if (document.getElementById('introOverlay')) {
+        console.log('Intro overlay found - loading home page');
         preloadIntroImages().then(() => {
             animateIntro();
         });
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize book gallery if on home page
     if (document.getElementById('bookGallery')) {
+        console.log('Book gallery found - initializing');
         startBookGallery();
         initializeSearch();
     }
@@ -105,10 +111,16 @@ function preloadIntroImages() {
 
 // Intro Animation
 function animateIntro() {
+    console.log('Starting intro animation');
     const introOverlay = document.getElementById('introOverlay');
     const introTitle = document.querySelector('.intro-title');
     const enterBtn = document.getElementById('enterBtn');
     const mainContainer = document.getElementById('mainContainer');
+    
+    if (!introOverlay || !enterBtn) {
+        console.error('Intro elements not found');
+        return;
+    }
     
     // Create particles
     createParticles();
@@ -202,6 +214,7 @@ function animateIntro() {
     // Skip intro by clicking anywhere
     introOverlay.addEventListener('click', (e) => {
         if (e.target === introOverlay) {
+            console.log('Clicked intro overlay - skipping intro');
             enterBtn.click();
         }
     });
@@ -209,6 +222,8 @@ function animateIntro() {
 
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    
     const particleCount = window.innerWidth < 768 ? 30 : 50;
     
     for (let i = 0; i < particleCount; i++) {
@@ -245,6 +260,8 @@ function createParticles() {
 
 function createIntroBooks() {
     const container = document.getElementById('introBooksContainer');
+    if (!container) return;
+    
     const bookData = [
         {
             cover: 'https://i.ibb.co/jvLJHYKy/2384227-IMG-modified.png',
@@ -340,46 +357,54 @@ function addBookInteractions(book, rotationY) {
 }
 
 function enterWebsite() {
-    clearInterval(window.introRotationInterval);
+    console.log('Enter website clicked');
     
-    const introBooks = document.querySelectorAll('.intro-book');
+    if (window.introRotationInterval) {
+        clearInterval(window.introRotationInterval);
+    }
+    
     const introOverlay = document.getElementById('introOverlay');
     const mainContainer = document.getElementById('mainContainer');
     const introTitle = document.querySelector('.intro-title');
     const enterBtn = document.getElementById('enterBtn');
     
-    // Fade out intro books
-    introBooks.forEach(book => {
-        book.classList.add('fade-out');
-    });
-    
     // Fade in main container
-    gsap.to(mainContainer, {
-        opacity: 1,
-        duration: 0.5
-    });
+    if (mainContainer) {
+        mainContainer.style.display = 'flex';
+        gsap.to(mainContainer, {
+            opacity: 1,
+            duration: 0.5
+        });
+    }
     
     // Fade out intro overlay
-    gsap.to(introOverlay, {
-        opacity: 0,
-        duration: 0.5,
-        delay: 0.5,
-        onComplete: () => {
-            introOverlay.style.display = 'none';
-        }
-    });
+    if (introOverlay) {
+        gsap.to(introOverlay, {
+            opacity: 0,
+            duration: 0.5,
+            delay: 0.5,
+            onComplete: () => {
+                introOverlay.style.display = 'none';
+            }
+        });
+    }
     
     // Fade out title and button
-    gsap.to([introTitle, enterBtn], {
-        opacity: 0,
-        duration: 0.3
-    });
+    if (introTitle && enterBtn) {
+        gsap.to([introTitle, enterBtn], {
+            opacity: 0,
+            duration: 0.3
+        });
+    }
 }
 
 // Book Gallery Functions
 function startBookGallery() {
     const bookGallery = document.getElementById('bookGallery');
     const navDots = document.getElementById('navDots');
+    
+    if (!bookGallery || !navDots) return;
+    
     const books = [];
     const totalBooks = 11;
     let currentIndex = 0;
@@ -388,7 +413,6 @@ function startBookGallery() {
     let clickStartTime = 0;
     let clickStartX = 0;
     let clickStartY = 0;
-    let autoSwipeInterval;
     
     const bookData = [
         {
@@ -603,6 +627,8 @@ function startBookGallery() {
 function initializeSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+    
+    if (!searchInput || !searchResults) return;
     
     const books = [
         { title: "অপেক্ষা", banglish: "Opekkha", link: "https://heyzine.com/flip-book/197fe6e70b.html" },
