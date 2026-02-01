@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>হুমায়ূন আহমেদ সমগ্র - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                <a href="new-collection.html" class="nav-link"><i class="fas fa-book-open"></i> New Collection</a>
+                <a href="review.html" class="nav-link"><i class="fas fa-star"></i> Review</a>
+                <a href="about.html" class="nav-link"><i class="fas fa-user"></i> About</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Intro Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="particles" id="particles"></div>
+        <div class="intro-books-container" id="introBooksContainer">
+            <h1 class="intro-title">হুমায়ূন আহমেদ সমগ্র</h1>
+            <button class="enter-btn" id="enterBtn">প্রবেশ করুন</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContainer">
+        <!-- Search Interface -->
+        <div class="search-container" id="searchContainer">
+            <div class="header">
+                <h1>হুমায়ূন আহমেদ সমগ্র</h1>
+            </div>
+            
+            <input type="text" id="searchInput" placeholder="বইয়ের নাম লিখুন...">
+            
+            <div id="searchResults"></div>
+        </div>
+
+        <!-- Book Gallery -->
+        <div class="gallery-container" id="galleryContainer">
+            <div class="book-gallery" id="bookGallery"></div>
+            <div class="nav-dots" id="navDots"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="company-header">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Company Logo" class="company-logo">
+                <div class="copyright">© 2025 All Rights Reserved</div>
+            </div>
+
+            <nav class="footer-nav">
+                <div class="nav-item" id="privacyBtn">
+                    Privacy Policy
+                    <div class="info-card" id="privacyCard">
+                        We respect your privacy. Your personal data is collected only with your consent, used solely for the intended purpose, and protected with appropriate security measures.
+                    </div>
+                </div>
+
+                <div class="nav-item" id="contactBtn">
+                    Contact Us
+                    <div class="info-card" id="contactCard">
+                        <div class="contact-item">
+                            <a href="mailto:primeaguntuk@gmail.com">primeaguntuk@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item" id="versionBtn">
+                    Version
+                    <div class="info-card" id="versionCard">
+                        Latest Version 0.1.23
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
