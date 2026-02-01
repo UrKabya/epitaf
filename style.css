@@ -1,4 +1,4 @@
-/* SIMPLE CSS FILE - NO COMPLEX ANIMATIONS */
+/* MAIN CSS FILE FOR ALL PAGES */
 
 :root {
     --primary-color: #4a6bff;
@@ -41,10 +41,12 @@ body {
     background: var(--background);
     color: var(--text-primary);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Navigation */
+/* Navigation - Same for all pages */
 .navbar {
     position: fixed;
     top: 0;
@@ -53,6 +55,7 @@ body {
     background: var(--header-footer-bg);
     border-bottom: 1px solid var(--border-color);
     padding: 10px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nav-container {
@@ -90,6 +93,7 @@ body {
 .nav-link:hover {
     background: var(--primary-color);
     color: white;
+    transform: translateY(-2px);
 }
 
 .nav-link.active {
@@ -115,6 +119,7 @@ body {
 .theme-toggle:hover {
     background: var(--primary-color);
     color: white;
+    transform: rotate(30deg);
 }
 
 .menu-toggle {
@@ -126,7 +131,17 @@ body {
     cursor: pointer;
 }
 
-/* Footer */
+/* Main Content Container */
+.page-container {
+    padding: 100px 20px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 120px);
+    flex: 1;
+    width: 100%;
+}
+
+/* Footer - CONSISTENT FOR ALL PAGES */
 .footer {
     background: var(--header-footer-bg);
     color: var(--text-primary);
@@ -135,6 +150,7 @@ body {
     border-top: 1px solid var(--border-color);
     margin-top: auto;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .footer-content {
@@ -222,7 +238,7 @@ body {
     font-size: 12px;
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
@@ -242,6 +258,7 @@ body {
         visibility: hidden;
         transition: all 0.3s ease;
         border-bottom: 1px solid var(--border-color);
+        z-index: 1000;
     }
     
     .nav-links.active {
@@ -250,7 +267,16 @@ body {
         visibility: visible;
     }
     
+    .page-container {
+        padding: 80px 15px 15px;
+        min-height: calc(100vh - 110px);
+    }
+    
     .footer-nav {
         gap: 15px;
+    }
+    
+    .footer-nav .nav-item {
+        font-size: 13px;
     }
 }
