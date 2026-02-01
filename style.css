@@ -1,17 +1,15 @@
+/* SIMPLE CSS FILE - NO COMPLEX ANIMATIONS */
+
 :root {
     --primary-color: #4a6bff;
     --secondary-color: #ff6b6b;
-    --accent-color: #6b48ff;
-    --book-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     --text-light: #ffffff;
     --text-dark: #333333;
-    --bg-dark: rgba(30, 30, 30, 0.9);
-    --bg-light: #ffffff;
+    --header-footer-bg: #1a1a2e;
     --card-bg-dark: rgba(30, 30, 45, 0.95);
     --card-bg-light: rgba(255, 255, 255, 0.95);
     --border-dark: rgba(255, 255, 255, 0.1);
     --border-light: rgba(0, 0, 0, 0.1);
-    --header-footer-bg: #1a1a2e;
 }
 
 .dark-mode {
@@ -36,20 +34,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     font-family: 'Baloo Da 2', cursive;
     background: var(--background);
     color: var(--text-primary);
-    overflow-x: hidden;
     min-height: 100vh;
-    touch-action: pan-y;
-    padding: 0;
     transition: background 0.3s ease, color 0.3s ease;
-    display: flex;
-    flex-direction: column;
 }
 
 /* Navigation */
@@ -59,10 +51,8 @@ body {
     width: 100%;
     z-index: 1000;
     background: var(--header-footer-bg);
-    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     padding: 10px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nav-container {
@@ -100,7 +90,6 @@ body {
 .nav-link:hover {
     background: var(--primary-color);
     color: white;
-    transform: translateY(-2px);
 }
 
 .nav-link.active {
@@ -124,7 +113,6 @@ body {
 }
 
 .theme-toggle:hover {
-    transform: rotate(30deg);
     background: var(--primary-color);
     color: white;
 }
@@ -138,436 +126,15 @@ body {
     cursor: pointer;
 }
 
-/* Intro Overlay */
-.intro-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    z-index: 2000;
-    pointer-events: all;
-    overflow: hidden;
-}
-
-.intro-overlay.hidden {
-    display: none;
-}
-
-.particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.particle {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.intro-books-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1200px;
-    transform-style: preserve-3d;
-    z-index: 2;
-}
-
-.intro-book {
-    position: absolute;
-    width: 45vw;
-    height: 65vw;
-    max-width: 160px;
-    max-height: 240px;
-    transform-style: preserve-3d;
-    will-change: transform;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    background-size: cover;
-    background-position: center;
-    filter: drop-shadow(0 0 15px rgba(74, 107, 255, 0.3));
-}
-
-.intro-book::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.intro-book::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
-    transition: none;
-}
-
-.intro-book.active::after {
-    animation: shine 3s ease-in-out infinite;
-}
-
-@keyframes shine {
-    0% { left: -100%; }
-    20% { left: 100%; }
-    100% { left: 100%; }
-}
-
-.intro-title {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    font-family: 'Baloo Da 2', cursive;
-    color: white;
-    font-weight: 700;
-    font-size: 1.8rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    top: 15%;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.enter-btn {
-    position: absolute;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 12px 30px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 30px;
-    color: white;
-    font-family: 'Baloo Da 2', cursive;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    z-index: 3;
-    opacity: 0;
-    pointer-events: auto;
-    transition: all 0.3s ease;
-}
-
-.enter-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateX(-50%) scale(1.05);
-}
-
-/* Main Container */
-.container {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 120px);
-    padding: 80px 20px 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    width: 100%;
-    flex: 1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.container.visible {
-    opacity: 1;
-}
-
-/* Search Interface */
-.search-container {
-    width: 95%;
-    max-width: 500px;
-    margin: 15px auto;
-    padding: 20px;
-    background: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    border: 2px solid var(--border-color);
-    backdrop-filter: blur(10px);
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-    position: relative;
-    z-index: 100;
-    order: 1;
-}
-
-.header {
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.header h1 {
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    margin-bottom: 8px;
-}
-
-#searchInput {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 25px;
-    background: var(--card-bg);
-    color: var(--text-primary);
-    font-family: 'Baloo Da 2', cursive;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    border: 1px solid var(--border-color);
-}
-
-#searchInput:focus {
-    outline: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transform: scale(1.02);
-}
-
-#searchResults {
-    margin-top: 15px;
-    max-height: 150px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
-
-#searchResults a {
-    display: block;
-    padding: 12px;
-    margin-bottom: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border-left: 2px solid transparent;
-    animation: fadeIn 0.5s ease-out;
-}
-
-#searchResults a:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-left: 2px solid var(--primary-color);
-    transform: translateX(5px);
-}
-
-/* Book Gallery */
-.gallery-container {
-    position: relative;
-    width: 100%;
-    height: 55vh;
-    perspective: 1200px;
-    margin: 0;
-    padding: 0;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards 0.3s;
-    order: 2;
-}
-
-.book-gallery {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.book {
-    position: absolute;
-    width: 45vw;
-    height: 65vw;
-    max-width: 180px;
-    max-height: 260px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
-    cursor: pointer;
-    will-change: transform;
-}
-
-.book-cover {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-color: transparent;
-    border-radius: 15px;
-    box-shadow: var(--book-shadow);
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    overflow: hidden;
-}
-
-.book-spine {
-    position: absolute;
-    width: 12px;
-    height: 100%;
-    background: #f0f0f0;
-    left: -12px;
-    top: 0;
-    transform: rotateY(90deg);
-    transform-origin: right center;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-    border-radius: 15px 0 0 15px;
-}
-
-.book-side {
-    position: absolute;
-    width: 12px;
-    height: 100%;
-    background: #f0f0f0;
-    right: -12px;
-    top: 0;
-    transform: rotateY(-90deg);
-    transform-origin: left center;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 0 15px 15px 0;
-}
-
-.book-front {
-    transform: translateZ(15px);
-}
-
-.book-back {
-    transform: rotateY(180deg) translateZ(15px);
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 14px;
-    padding: 20px;
-    text-align: center;
-    border-radius: 20px;
-}
-
-.book-title {
-    position: absolute;
-    bottom: -35px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-family: 'Baloo Da 2', cursive;
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 16px;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    background-color: transparent;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-.book-pages {
-    position: absolute;
-    bottom: -55px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 13px;
-    opacity: 0.8;
-    pointer-events: none;
-}
-
-.book-pdf-link {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    border-radius: 20px;
-    transform: translateZ(30px);
-}
-
-.nav-dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    z-index: 100;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ccc;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.dot.active {
-    background-color: var(--primary-color);
-    transform: scale(1.2);
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-100px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
 /* Footer */
 .footer {
-    position: relative;
     background: var(--header-footer-bg);
-    backdrop-filter: blur(12px);
     color: var(--text-primary);
     padding: 15px 0 10px;
     text-align: center;
-    z-index: 100;
     border-top: 1px solid var(--border-color);
     margin-top: auto;
     width: 100%;
-    flex-shrink: 0;
 }
 
 .footer-content {
@@ -619,7 +186,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background: var(--header-footer-bg);
-    backdrop-filter: blur(10px);
     padding: 12px 15px;
     border-radius: 6px;
     width: auto;
@@ -638,7 +204,6 @@ body {
 .info-card.show {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(-3px);
 }
 
 .info-card::after {
@@ -649,11 +214,6 @@ body {
     transform: translateX(-50%);
     border: 5px solid transparent;
     border-top-color: var(--header-footer-bg);
-}
-
-.contact-item {
-    margin: 6px 0;
-    white-space: nowrap;
 }
 
 .contact-item a {
@@ -690,58 +250,7 @@ body {
         visibility: visible;
     }
     
-    .container {
-        padding: 70px 15px 15px;
-        min-height: calc(100vh - 110px);
-    }
-    
-    .gallery-container {
-        height: 50vh;
-    }
-    
-    .book {
-        max-width: 140px;
-        max-height: 200px;
-    }
-    
-    .book-title {
-        font-size: 14px;
-        bottom: -30px;
-    }
-    
-    .book-pages {
-        font-size: 11px;
-        bottom: -45px;
-    }
-    
     .footer-nav {
         gap: 15px;
-    }
-    
-    .footer-nav .nav-item {
-        font-size: 13px;
-    }
-}
-
-@media (min-width: 768px) {
-    .container {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        padding: 100px 20px 20px;
-        min-height: calc(100vh - 120px);
-    }
-    
-    .gallery-container {
-        width: 50%;
-        height: 70vh;
-        order: 2;
-    }
-    
-    .search-container {
-        width: 40%;
-        max-width: 400px;
-        margin: 0;
-        order: 1;
     }
 }
