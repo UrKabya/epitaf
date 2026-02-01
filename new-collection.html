@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হুমায়ূন আহমেদ সমগ্র - New Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-container {
+            padding: 80px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
+            flex: 1;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+        
+        .page-title h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .components-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .component-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        /* Quote Carousel Styles */
+        .quote-carousel {
+            width: 100%;
+            position: relative;
+            z-index: 20;
+        }
+
+        .quote-card {
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            margin: 0 auto;
+            min-height: 250px;
+        }
+
+        .quote-card.active {
+            display: flex;
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .quote-card.next {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .quote-card.prev {
+            display: flex;
+            position: absolute;
+            top: 0;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .quote-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--text-primary);
+            padding: 0 20px;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .quote-text::before {
+            top: -30px;
+            left: 0;
+        }
+
+        .quote-text::after {
+            bottom: -50px;
+            right: 0;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .author::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .arrow {
+            pointer-events: auto;
+            background: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .arrow:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Static Book Grid Styles */
+        .book-grid-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .book-item {
+            position: relative;
+            width: 120px;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1;
+            border: 2px solid transparent;
+        }
+
+        .book-item:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 12px 25px rgba(74, 107, 255, 0.3);
+        }
+
+        .book-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .book-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .book-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .book-item:hover .book-overlay {
+            transform: translateY(0);
+        }
+
+        .book-title {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 1.3rem;
+            }
+            
+            .quote-text::before,
+            .quote-text::after {
+                font-size: 3rem;
+            }
+            
+            .quote-text::before {
+                top: -20px;
+                left: 0;
+            }
+            
+            .quote-text::after {
+                bottom: -40px;
+                right: 0;
+            }
+            
+            .quote-card {
+                padding: 30px 20px;
+                min-height: 200px;
+            }
+            
+            .arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .book-item {
+                width: 100px;
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .book-item {
+                width: 90px;
+                height: 135px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="new-collection.html" class="nav-link active"><i class="fas fa-book-open"></i> New Collection</a>
+                <a href="review.html" class="nav-link"><i class="fas fa-star"></i> Review</a>
+                <a href="about.html" class="nav-link"><i class="fas fa-user"></i> About</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="page-container">
+        <div class="page-title">
+            <h1>নতুন সংকলন</h1>
+            <p>হুমায়ূন আহমেদের শ্রেষ্ঠ উক্তি এবং নতুন বই</p>
+        </div>
+        
+        <div class="components-container">
+            <!-- Quotes Section -->
+            <div class="component-section">
+                <h2 class="section-title">হুমায়ূন আহমেদের উক্তি</h2>
+                <div class="quote-carousel">
+                    <div class="nav-arrows">
+                        <div class="arrow left-arrow"><i class="fas fa-chevron-left"></i></div>
+                        <div class="arrow right-arrow"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <div class="quote-card active">
+                        <div class="quote-text">বড় বড় সমস্যার সমাধান সহজেই হয়। কিন্তু ছোট ছোট সমস্যার সমাধান করাটাই সবচেয়ে কঠিন।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">ভালোবাসা এমন এক জিনিস যা দিয়ে সবকিছু কেনা যায় শুধু ভালোবাসা ছাড়া।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">যারা কম বোঝে তারাই পৃথিবীতে সবচেয়ে সুখী।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">জীবন খুব ছোট কিন্তু এই ছোট জীবনের মধ্যেই লুকিয়ে আছে সবচেয়ে বড় রহস্য।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">যে মানুষ স্বপ্ন দেখতে জানে না সে কখনো বড় কিছু করতে পারে না।</div>
+                        <div class="author">হুমায়ূন আহমেদ</div>
+                    </div>
+
+                    <div class="nav-dots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                        <div class="dot" data-index="3"></div>
+                        <div class="dot" data-index="4"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Book Grid Section -->
+            <div class="component-section">
+                <h2 class="section-title">নতুন বইয়ের সংগ্রহ</h2>
+                <div class="book-grid-container">
+                    <div class="book-grid">
+                        <div class="book-item">
+                            <img src="https://fs.pbs.com.bd/DIR/Com/PBS/Product/Image/2102275.jpg" alt="Book 1" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+1'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 1</p>
+                            </div>
+                        </div>
+                        <div class="book-item">
+                            <img src="https://static.wixstatic.com/media/6f18a9_22d72ecf3df34cd982d10bdef8b465bd~mv2.jpg/v1/fit/w_237,h_316,q_90/6f18a9_22d72ecf3df34cd982d10bdef8b465bd~mv2.jpg" alt="Book 2" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+2'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 2</p>
+                            </div>
+                        </div>
+                        <div class="book-item">
+                            <img src="https://i.ibb.co/jvLJHYKy/2384227-IMG-modified.png" alt="Book 3" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+3'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 3</p>
+                            </div>
+                        </div>
+                        <div class="book-item">
+                            <img src="https://static-01.daraz.com.bd/p/6ca53235b373934688e8e6c020589114.jpg" alt="Book 4" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+4'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 4</p>
+                            </div>
+                        </div>
+                        <div class="book-item">
+                            <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1482605082i/33558675.jpg" alt="Book 5" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+5'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 5</p>
+                            </div>
+                        </div>
+                        <div class="book-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/7/75/Nondito_Noroke_book_cover.jpg" alt="Book 6" onerror="this.src='https://placehold.co/120x180/cccccc/333333?text=Book+6'">
+                            <div class="book-overlay">
+                                <p class="book-title">Book 6</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="company-header">
+                <img src="https://i.ibb.co/HT9Gqv38/upscalemedia-transformed-1-removebg-preview.png" alt="Company Logo" class="company-logo">
+                <div class="copyright">© 2025 All Rights Reserved</div>
+            </div>
+
+            <nav class="footer-nav">
+                <div class="nav-item" id="privacyBtn">
+                    Privacy Policy
+                    <div class="info-card" id="privacyCard">
+                        We respect your privacy. Your personal data is collected only with your consent.
+                    </div>
+                </div>
+
+                <div class="nav-item" id="contactBtn">
+                    Contact Us
+                    <div class="info-card" id="contactCard">
+                        <div class="contact-item">
+                            <a href="mailto:primeaguntuk@gmail.com">primeaguntuk@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item" id="versionBtn">
+                    Version
+                    <div class="info-card" id="versionCard">
+                        Latest Version 0.1.23
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            
+            const icon = themeToggle.querySelector('i');
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            
+            localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+        
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+        }
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-container')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+        
+        // Quote Carousel
+        const cards = document.querySelectorAll('.quote-card');
+        const dots = document.querySelectorAll('.dot');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+        let currentIndex = 0;
+        let autoSwipeInterval;
+
+        function showCard(index) {
+            cards.forEach(card => {
+                card.classList.remove('active', 'prev', 'next');
+            });
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            cards[index].classList.add('active');
+            
+            currentIndex = index;
+            resetAutoSwipe();
+        }
+
+        function nextCard() {
+            const nextIndex = (currentIndex + 1) % cards.length;
+            showCard(nextIndex);
+        }
+
+        function prevCard() {
+            const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+            showCard(prevIndex);
+        }
+
+        function resetAutoSwipe() {
+            clearInterval(autoSwipeInterval);
+            autoSwipeInterval = setInterval(nextCard, 5000);
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showCard(parseInt(dot.getAttribute('data-index')));
+            });
+        });
+
+        leftArrow.addEventListener('click', prevCard);
+        rightArrow.addEventListener('click', nextCard);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === 'ArrowRight') nextCard();
+        });
+
+        showCard(0);
+        resetAutoSwipe();
+        
+        // Book items click
+        const bookItems = document.querySelectorAll('.book-item');
+        const bookLinks = [
+            "https://heyzine.com/flip-book/01867b93a0.html",
+            "https://heyzine.com/flip-book/6c60034146.html",
+            "https://heyzine.com/flip-book/197fe6e70b.html",
+            "https://heyzine.com/flip-book/1a2e8c1868.html",
+            "https://heyzine.com/flip-book/36500c0f66.html",
+            "https://heyzine.com/flip-book/b4a3d63030.html",
+        ];
+
+        bookItems.forEach((book, i) => {
+            book.addEventListener('click', () => {
+                window.open(bookLinks[i], '_blank');
+            });
+        });
+        
+        // Footer info cards
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.querySelector('.info-card');
+                
+                document.querySelectorAll('.info-card').forEach(c => {
+                    if (c !== card) c.classList.remove('show');
+                });
+                
+                card.classList.toggle('show');
+            });
+        });
+        
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
