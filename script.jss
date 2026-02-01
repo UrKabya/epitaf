@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Mobile Menu Toggle
+    // MOBILE MENU TOGGLE - FIXED VERSION
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -44,6 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!e.target.closest('.nav-container')) {
                 navLinks.classList.remove('active');
             }
+        });
+        
+        // Close menu when clicking a link - ADDED THIS PART
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
         });
     }
     
